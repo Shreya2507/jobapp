@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Login from './pages/Login';
+import Register from './pages/Register'
+import { useContext } from 'react';
+import { AuthContext } from './context/AuthContext';
+import Home from './components/Home';
+import LandingPage from './pages/LandingPage';
+import Dashboard from './pages/Dashboard';
 
 function App() {
+  const { user } = useContext(AuthContext);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className=' bg-white w-screen h-screen font-inter-tight overflow-x-hidden'>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          {/* <Route path="/" element={!user ? <Navigate to="/login" /> : <Navigate to="/dashboard" />}  */}
+          <Route path="/login" element={<Login />} />  {/* No conditional; Login handles redirects */}
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />}/> 
+        {/* <Route path="/forgot-password" element={<ForgotPassword />} />  */}
+        {/* <Route path="/reset-password" element={<ResetPassword />} />  */}
+        </Routes>
+      </Router>
     </div>
   );
 }
