@@ -17,6 +17,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const auth = getAuth();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
@@ -34,6 +35,7 @@ export const AuthProvider = ({ children }) => {
       } else {
         setUser(null);
       }
+      setLoading(false); 
     });
 
     return () => unsubscribe();
@@ -50,7 +52,7 @@ export const AuthProvider = ({ children }) => {
       uid: userCredential.user.uid,
       email: userCredential.user.email,
       name: userData.name || userCredential.user.email.split('@')[0],
-      isAdmin: userData.isAdmin || false  // Critical for redirection logic
+      // isAdmin: userData.isAdmin || false  // Critical for redirection logic
     };
     
     setUser(currentUser);
@@ -79,7 +81,7 @@ const register = async (email, password, name) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register }}>
+    <AuthContext.Provider value={{ user, login, logout, register, loading }}>
       {children}
     </AuthContext.Provider>
   );

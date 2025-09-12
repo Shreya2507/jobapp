@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from "framer-motion";
-import Marquee from './Marquee';
+import Marquee from '../components/Marquee';
 import { FaArrowUpLong } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 
@@ -31,7 +31,7 @@ function Home() {
                     <div className="textstructure mb-32 ">
                         {["Track your", "Job", "applications"].map((item, index) => {
                             return (
-                                <div className="masker">
+                                <div key={index} className="masker">
                                     <div className="w-fit flex items-center overflow-hidden">
                                         {index === 1 && (<motion.div initial={{ width: 0, height: "7.8vw" }} animate={{ width: "9vw", height: "8vw" }} transition={{ ease: [0.76, 0, 0.24, 1], duration: 1.5 }} className=' mr-[1vw] w-[9vw] rounded-md relative overflow-hidden bg-cover bg-center bg-[url("https://i.pinimg.com/736x/84/1a/82/841a82661e9e2bd0717df2f54752fe07.jpg")]'></motion.div>)}
                                         <div className="leading-[7vw] tracking-tight uppercase text-[6vw] font-['Inter_Tight'] font-[700] ">
@@ -42,7 +42,7 @@ function Home() {
                                 </div>
                             );
                         })}
-                        <motion.div whileHover={{ scale: 1.05 }} className="mt-2 flex w-fit items-center gap-1 cursor-pointer group">
+                        <motion.div onClick={goToLogin} whileHover={{ scale: 1.05 }} className="mt-2 flex w-fit items-center gap-1 cursor-pointer group">
                             <div className="uppercase px-7 py-[0.6rem] text-lg border-[1.5px] border-zinc-500 rounded-full group-hover:bg-[#bd8bec] transition-all ease-in-out">Get started</div>
                             <div className=" w-12 h-12 border-[1.5px] text-2xl border-zinc-500 rounded-full flex items-center justify-center group-hover:shadow-lg group-hover:shadow-slate-400 transition-all ease-in-out">
                                 <span className='rotate-[45deg]'>

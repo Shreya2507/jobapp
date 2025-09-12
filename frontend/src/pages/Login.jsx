@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa6';
@@ -11,16 +11,25 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const { login } = useContext(AuthContext);
+    const { user, login } = useContext(AuthContext);
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
+
+    useEffect(() => {
+        if (user) {
+            console.log("User already logged in")
+            navigate('/dashboard');
+        }
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
 
         try {
-            await login(email, password);
+            const currentUser = await login(email, password);
+            localStorage.setItem('current-user', JSON.stringify(currentUser));
+            console.log(localStorage);
             navigate('/dashboard');
         } catch (err) {
             console.error(err);

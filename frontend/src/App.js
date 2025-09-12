@@ -3,9 +3,10 @@ import Login from './pages/Login';
 import Register from './pages/Register'
 import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
-import Home from './components/Home';
-import LandingPage from './pages/LandingPage';
+import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute';
+import PublicRoute from './components/PublicRoute';
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -14,12 +15,27 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* <Route path="/" element={!user ? <Navigate to="/login" /> : <Navigate to="/dashboard" />}  */}
-          <Route path="/login" element={<Login />} />  {/* No conditional; Login handles redirects */}
+          {/* <Route path="/" element={!user ? <Navigate to="/" /> : <Navigate to="/dashboard" />} /> */}
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />}/> 
-        {/* <Route path="/forgot-password" element={<ForgotPassword />} />  */}
-        {/* <Route path="/reset-password" element={<ResetPassword />} />  */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} /> */}
+          {/* <Route path="/forgot-password" element={<ForgotPassword />} />  */}
+          {/* <Route path="/reset-password" element={<ResetPassword />} />  */}
         </Routes>
       </Router>
     </div>
