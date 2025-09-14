@@ -7,6 +7,7 @@ import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 
 
+
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -14,6 +15,7 @@ export default function Login() {
     const { user, login } = useContext(AuthContext);
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -25,6 +27,7 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        setLoading(true);
 
         try {
             const currentUser = await login(email, password);
@@ -44,6 +47,7 @@ export default function Login() {
             } else {
                 setError('Login failed. Please try again.');
             }
+            setLoading(false);
         }
     };
 
@@ -99,9 +103,23 @@ export default function Login() {
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 type="submit"
+                                disabled={loading}
                                 className="w-full text-xl bg-[#7f49e2] text-white font-semibold py-3 rounded-xl hover:bg-white hover:text-[#7f49e2] hover:border-2 hover:border-[#7f49e2] transition-all ease-in-out"
                             >
-                                Login <FaArrowRight className="inline ml-2" />
+                                {loading ? (
+                                    <span className="flex items-center justify-center">
+                                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Loading...
+                                    </span>
+                                ) : (
+                                    <>
+                                        Login <FaArrowRight className="inline ml-2" />
+                                    </>
+                                )}
+
                             </motion.button>
                         </form>
 

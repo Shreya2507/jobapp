@@ -33,7 +33,7 @@ function Home() {
                             return (
                                 <div key={index} className="masker">
                                     <div className="w-fit flex items-center overflow-hidden">
-                                        {index === 1 && (<motion.div initial={{ width: 0, height: "7.8vw" }} animate={{ width: "9vw", height: "8vw" }} transition={{ ease: [0.76, 0, 0.24, 1], duration: 1.5 }} className=' mr-[1vw] w-[9vw] rounded-md relative overflow-hidden bg-cover bg-center bg-[url("https://i.pinimg.com/736x/84/1a/82/841a82661e9e2bd0717df2f54752fe07.jpg")]'></motion.div>)}
+                                        {index === 1 && (<motion.div initial={{ width: 0, height: "7.8vw" }} animate={{ width: "9vw", height: "8vw" }} transition={{ ease: [0.76, 0, 0.24, 1], duration: 2 }} className=' mr-[1vw] w-[9vw] rounded-md relative overflow-hidden bg-cover bg-center bg-[url("https://i.pinimg.com/736x/84/1a/82/841a82661e9e2bd0717df2f54752fe07.jpg")]'></motion.div>)}
                                         <div className="leading-[7vw] tracking-tight uppercase text-[6vw] font-['Inter_Tight'] font-[700] ">
                                             {item}
                                         </div>
