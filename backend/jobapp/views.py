@@ -7,6 +7,7 @@ from rest_framework import status
 
 
 class UserView(APIView):
+    #adding new Api
     serializer_class = UserSerializer
 
     def get(self,request):
