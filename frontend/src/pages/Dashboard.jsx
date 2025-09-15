@@ -4,7 +4,6 @@ import { AuthContext } from '../context/AuthContext';
 import { motion } from "framer-motion";
 import axios from 'axios';
 import Navbar from '../components/dashboard/Navbar';
-import { CiSearch } from "react-icons/ci";
 import Friends from '../components/dashboard/Friends';
 import People from '../components/dashboard/People';
 import Settings from '../components/dashboard/Settings';
@@ -90,8 +89,8 @@ function Dashboard() {
       <div className=' overflow-y-scroll w-full h-full px-10 py-5 flex flex-col items-center justify-start'>
 
         {/* TOP BAR */}
-        <div className=' w-full h-16 mb-8 flex justify-between items-center'>
-          {
+        <div className=' w-full h-16 mb-8 flex justify-end items-center'>
+          {/* {
             (selectedLink === 1 || selectedLink === 2) ?
 
               <div className='relative h-full w-1/2'>
@@ -99,7 +98,7 @@ function Dashboard() {
               </div>
 
               : <div></div>
-          }
+          } */}
           <div className=' h-full flex gap-7 justify-between items-center'>
             <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 1.02 }} onClick={signOut} className='w-40 xl:w-52 h-5/6 text-lg xl:text-xl bg-purple-400 text-white uppercase shadow-lg shadow-purple-300 cursor-pointer text-center font-semibold rounded-full transition-all ease-in-out'>Logout</motion.button>
             <div className=' h-full font-semibold flex justify-end items-center text-lg xl:text-2xl'>Shreya Mathur</div>
