@@ -20,6 +20,10 @@ from jobapp.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/users/', UserView.as_view(), name="users"),
-    path('api/joblinks/', JoblinkView.as_view(), name="joblinks"),
+    path('user/', UserView.as_view(), name="user-create"),
+    path('user/<str:uid>', UserView.as_view(), name="user"),
+    path('joblinks/', JoblinkView.as_view(), name="joblinks"),
+    path('joblinks/<int:j_id>', JoblinkView.as_view(), name="joblink_delete"),
+    path('user/<str:uid>/friends/', FriendlistView.as_view(), name="friendlistview"),
+    path('user/<str:uid>/people/', PeoplelistView.as_view(), name="peoplelist"),
 ]
