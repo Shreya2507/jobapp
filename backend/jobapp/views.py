@@ -26,7 +26,7 @@ class UserView(APIView):
         user.delete()
         return Response(
             {"message": f"User {uid} deleted successfully"},
-            status=status.HTTP_204_NO_CONTENT
+            status=status.HTTP_200_OK
         )
         
 class JoblinkView(APIView):
@@ -46,7 +46,7 @@ class JoblinkView(APIView):
         job_link.delete()
         return Response(
             {"message": f"Job link {j_id} deleted successfully"},
-            status=status.HTTP_204_NO_CONTENT
+            status=status.HTTP_200_OK
         )
     def patch(self, request, j_id):
         job_link = get_object_or_404(Joblinks, id=j_id)
@@ -104,17 +104,32 @@ class PeoplelistView(APIView):
     def get(self, request, uid):
         # exclude by firebase_uid
         user = get_object_or_404(User, firebase_uid=uid)
-        friendships = Friendlist.objects.filter(Q(user1=user) | Q(user2=user))
+        all_users = User.objects.exclude(id=user.id)
 
-        serializer = AllFriendsSerializer(friendships,many=True,context={"current_user": user})
-        users = User.objects.exclude(id=user.id)
-        user_serializer = AllUserSerializer(users,many=True)
+        response_users = []
+        for other in all_users:
+            # check if there's a friendship relation
+            friendship = Friendlist.objects.filter(
+                Q(user1=user, user2=other) | Q(user1=other, user2=user)
+            ).first()
+
+            if friendship:
+                relation = friendship.status   # "pending" or "accepted"
+            else:
+                relation = "none"
+
+            response_users.append({
+                "id": other.id,
+                "firebase_uid": other.firebase_uid,
+                "username": other.username,
+                "relation": relation
+            })
+
         response = {
             "id": user.id,
             "firebase_uid": user.firebase_uid,
             "username": user.username,
-            "friends": serializer.data,
-            "all_users": user_serializer.data
+            "all_users": response_users
         }
         return Response(response)
 

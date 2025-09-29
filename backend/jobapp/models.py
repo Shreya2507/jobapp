@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class User(models.Model):
     username = models.CharField(max_length=30)
-    firebase_uid = models.CharField(max_length=50,default="xxxxx")
+    firebase_uid = models.CharField(max_length=50,unique=True)
 
 
 class Friendlist(models.Model):
