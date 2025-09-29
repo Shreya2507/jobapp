@@ -260,7 +260,7 @@ export const friends =
             "username": "Sneha Mathur",
         },
         {
-            "id": 1,
+            "id": 4,
             "username": "Pari Mathur",
         }
     ]

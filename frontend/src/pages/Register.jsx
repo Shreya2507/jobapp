@@ -1,12 +1,12 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { ref, set } from 'firebase/database';
-import { db } from '../firebaseConfig';
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa6';
 import { motion } from "framer-motion";
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
+import axios from "axios";
+import { registerUser } from '../utils/APIrequests';
 
 export default function Register() {
     const [email, setEmail] = useState('');
@@ -14,7 +14,7 @@ export default function Register() {
     const [name, setName] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const { register } = useContext(AuthContext);
+    const { register, logout } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);
@@ -35,16 +35,13 @@ export default function Register() {
         try {
             const userCredential = await register(email, password, name);
             const user = userCredential.user;
-
-            await set(ref(db, 'users/' + user.uid), {
-                name,
-                email
-            });
+            logout();
+            localStorage.setItem('current-user', JSON.stringify(user));
 
             console.log("Registered successfully !");
             setTimeout(() => {
                 navigate('/dashboard');
-            }, 2000);
+            }, 1000);
 
         } catch (err) {
             console.error(err);
@@ -64,7 +61,7 @@ export default function Register() {
                 <div className='bg-red-200 w-full h-full flex items-center'>
                     <div className='w-1/3 h-full py-12 flex justify-center items-center'><motion.img whileHover={{ scale: 1.05 }} className='h-full' src="/images/man.png" alt="man" /></div>
                     <div className='px-20 py-16 rounded-tl-[4vw] rounded-bl-[4vw] bg-white w-2/3'>
-                        
+
 
                         <h2 className="text-center uppercase mb-2 text-4xl font-bold text-[#7f49e2] ">Create Account</h2>
                         {/* <p className="text-gray-500 text-center mb-8">Join us today to get started</p> */}
@@ -77,9 +74,9 @@ export default function Register() {
                                 {error}
                             </div>)
                             : (<div className="mb-2 p-3 rounded-lg flex items-center justify-center text-sm">
-                                
+
                             </div>
-                        )}
+                            )}
 
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
@@ -175,16 +172,16 @@ export default function Register() {
                                 )}
                             </button>
 
-                            
+
                         </form>
                         <div className=" mt-2 pt-2 border-t border-gray-200 text-center">
-                                <p className="text-lg font-semibold text-gray-500">
-                                    Already have an account?{' '}
-                                    <Link to="/login" className="font-medium text-blue-600 hover:text-blue-800 transition-colors">
-                                        Log in
-                                    </Link>
-                                </p>
-                            </div>
+                            <p className="text-lg font-semibold text-gray-500">
+                                Already have an account?{' '}
+                                <Link to="/login" className="font-medium text-blue-600 hover:text-blue-800 transition-colors">
+                                    Log in
+                                </Link>
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <Link to="/" className="absolute top-5 right-5 text-slate-600 hover:text-blue-800"><FaArrowLeft className="inline mr-2 mb-1" />Go back</Link>

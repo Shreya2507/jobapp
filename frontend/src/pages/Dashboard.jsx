@@ -10,55 +10,18 @@ import Settings from '../components/dashboard/Settings';
 import JobLinks from '../components/dashboard/JobLinks';
 import { IoMdArrowDroprightCircle } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
-
+import { FaUserCircle } from "react-icons/fa";
 
 
 function Dashboard() {
   const { logout } = useContext(AuthContext);
   const [selectedLink, setSelectedLink] = useState(0);
   const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState();
 
-  // const [data, setData] = useState(null);
-  // useEffect(() => {
-  //   let response;
-  //   axios.get("https://lc2tbvxv-8000.inc1.devtunnels.ms/api/users/")
-  //     .then(res => {
-  //       response = res.data;
-  //       // console.log(response);
-  //       setData(response);
-  //     }).catch(err => { })
-  // }, []);
-  const [data, setData] = useState(
-    [
-      {
-        "id": 1,
-        "username": "Akshit",
-        "joblinks_set": [
-          {
-            "id": 1,
-            "user": 1,
-            "job_link": "https://www.youtube.com/"
-          },
-          {
-            "id": 2,
-            "user": 1,
-            "job_link": "https://www.youtube.com/"
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "username": "Shreya",
-        "joblinks_set": [
-          {
-            "id": 1,
-            "user": 2,
-            "job_link": "https://www.youtube.com/"
-          }
-        ]
-      }
-
-    ])
+  useEffect(() => {
+    setCurrentUser(JSON.parse(localStorage.getItem("current-user")));
+  }, []);
 
   const signOut = async () => {
     await logout();
@@ -99,9 +62,12 @@ function Dashboard() {
 
               : <div></div>
           } */}
-          <div className=' h-full flex gap-7 justify-between items-center'>
-            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 1.02 }} onClick={signOut} className='w-40 xl:w-52 h-5/6 text-lg xl:text-xl bg-purple-400 text-white uppercase shadow-lg shadow-purple-300 cursor-pointer text-center font-semibold rounded-full transition-all ease-in-out'>Logout</motion.button>
-            <div className=' h-full font-semibold flex justify-end items-center text-lg xl:text-2xl'>Shreya Mathur</div>
+          <div className=' h-full w-fit flex justify-between gap-7 items-center'>
+            <div className=' w-60 h-5/6'><motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 1.02 }} onClick={signOut} className=' w-full h-full text-lg xl:text-xl bg-purple-400 text-white uppercase shadow-lg shadow-purple-300 cursor-pointer text-center font-semibold rounded-full transition-all ease-in-out'>Logout</motion.button></div>
+            <div className='w-fit h-full flex justify-end items-center'>
+              <div className='w-12 h-full mr-4'><FaUserCircle className='h-full w-full' /></div>
+              <div className=' capitalize font-semibold text-lg xl:text-2xl'>{currentUser ? currentUser.name : ""}</div>
+            </div>
           </div>
         </div>
 
