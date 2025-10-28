@@ -11,15 +11,23 @@ class FriendlistSerializer(serializers.ModelSerializer):
     from_user_firebase_uid = serializers.CharField(source='user1.firebase_uid', read_only=True)
     to_user_name = serializers.CharField(source='user2.username', read_only=True)
     to_user_firebase_uid = serializers.CharField(source='user2.firebase_uid', read_only=True)
-    friend_joblinks_set = JoblinksSerializer(source = 'user2.joblinks',many=True, read_only=True)
+    # friend_joblinks_set = JoblinksSerializer(source = 'user2.joblinks',many=True, read_only=True)
     class Meta:
         model = Friendlist
         fields = ['id','user1','user2','from_user_name','from_user_firebase_uid','to_user_firebase_uid','to_user_name','status','friend_joblinks_set']
 
+class SentFriendlistSerializer(FriendlistSerializer):
+    friend_joblinks_set = JoblinksSerializer(source='user2.joblinks', many=True, read_only=True)
+
+class ReceivedFriendlistSerializer(FriendlistSerializer):
+    friend_joblinks_set = JoblinksSerializer(source='user1.joblinks', many=True, read_only=True)
+
+
 class UserSerializer(serializers.ModelSerializer):
-    joblinks_set = JoblinksSerializer(source='joblinks',many=True, read_only=True)
-    sent_friendlist_set = FriendlistSerializer(source='sent_friendship',many=True,read_only=True)
-    received_friendlist_set = FriendlistSerializer(source='received_friendship',many=True,read_only=True)
+    joblinks_set = JoblinksSerializer(source='joblinks', many=True, read_only=True)
+    sent_friendlist_set = SentFriendlistSerializer(source='sent_friendship', many=True, read_only=True)
+    received_friendlist_set = ReceivedFriendlistSerializer(source='received_friendship', many=True, read_only=True)
+
 
     class Meta:
         model = User
